@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server'
+import { verifyAuth } from '@/backend/lib/auth/middleware'
 import Stripe from 'stripe'
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
 const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2023-08-16' })
 
 export async function POST(request: Request) {
+  try {
+    await verifyAuth(request)
+  } catch {
+    NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return
+  }
+
   const protocol = request.headers.get('x-forwarded-proto') || 'http'
   const hostname = request.headers.get('host') || ''
   const session = await stripe.checkout.sessions.create({
