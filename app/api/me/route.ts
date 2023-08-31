@@ -6,7 +6,6 @@ export async function GET(request: Request) {
     const user = await verifyAuth(request)
     return NextResponse.json(user)
   } catch {
-    NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    return
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 }

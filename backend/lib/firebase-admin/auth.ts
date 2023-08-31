@@ -1,11 +1,7 @@
 import * as admin from 'firebase-admin'
 import 'firebase/auth'
-import { IncomingMessage } from 'http'
 import { z } from 'zod'
 import { cert } from './cert'
-
-const ENV = process.env.APP_ENV || ''
-const idTokenHeaderName = 'authorization'
 
 export const FirebaseAuthData = z.object({
   firebaseAuthId: z.string(),
@@ -46,7 +42,6 @@ export function getFirebaseAdmin(): admin.auth.Auth {
   return Cache.auth
 }
 
-// たぶん、EitherやResult入れた方が良い
 export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthData> {
   if (idToken) {
     const firebaseAdmin = getFirebaseAdmin()
@@ -62,7 +57,6 @@ export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthD
         photoURL: userData.photoURL || null
       } as FirebaseAuthData)
     } catch (e) {
-      console.log(e)
       throw new FirebaseAuthError(ErrorType.enum.FirebaseAuthError)
     }
   }

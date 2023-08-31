@@ -5,9 +5,5 @@ export async function verifyAuth(request: Request) {
   if (!idToken) {
     throw new Error('No IDToken')
   }
-  try {
-    return await verifyFirebaseAuth(idToken)
-  } catch {
-    throw new Error('Unauthorized')
-  }
+  return await verifyFirebaseAuth(idToken)
 }
