@@ -1,7 +1,6 @@
-import * as admin from 'firebase-admin'
 import 'firebase/auth'
 import { z } from 'zod'
-import { cert } from './cert'
+import { getFirebaseAdmin } from './cert'
 
 export const FirebaseAuthData = z.object({
   firebaseAuthId: z.string(),
@@ -24,22 +23,6 @@ export class FirebaseAuthError extends Error {
     super(message)
     this.errorType = errorType
   }
-}
-
-class Cache {
-  static auth: admin.auth.Auth
-}
-
-export function getFirebaseAdmin(): admin.auth.Auth {
-  if (Cache.auth) {
-    return Cache.auth
-  }
-  if (admin.apps.length === 0) {
-    admin.initializeApp({ credential: admin.credential.cert(cert) })
-  }
-
-  Cache.auth = admin.auth()
-  return Cache.auth
 }
 
 export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthData> {

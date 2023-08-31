@@ -6,11 +6,9 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
 const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2023-08-16' })
 
 export async function POST(request: Request) {
-  try {
-    await verifyAuth(request)
-  } catch {
-    NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    return
+  const result = await verifyAuth(request)
+  if (result.isFailure) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const protocol = request.headers.get('x-forwarded-proto') || 'http'
