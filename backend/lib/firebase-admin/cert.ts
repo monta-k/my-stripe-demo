@@ -3,3 +3,4 @@ export const cert = {
   clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
   privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY
 }
+console.log(cert)

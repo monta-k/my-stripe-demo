@@ -44,8 +44,8 @@ export function getFirebaseAdmin(): admin.auth.Auth {
 
 export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthData> {
   if (idToken) {
-    const firebaseAdmin = getFirebaseAdmin()
     try {
+      const firebaseAdmin = getFirebaseAdmin()
       const verified = await firebaseAdmin.verifyIdToken(idToken)
 
       const userData = await firebaseAdmin.getUser(verified.uid)
@@ -57,6 +57,7 @@ export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthD
         photoURL: userData.photoURL || null
       } as FirebaseAuthData)
     } catch (e) {
+      console.log(e)
       throw new FirebaseAuthError(ErrorType.enum.FirebaseAuthError)
     }
   }
