@@ -57,7 +57,6 @@ export async function verifyFirebaseAuth(idToken: string): Promise<FirebaseAuthD
         photoURL: userData.photoURL || null
       } as FirebaseAuthData)
     } catch (e) {
-      console.log(e)
       throw new FirebaseAuthError(ErrorType.enum.FirebaseAuthError)
     }
   }
