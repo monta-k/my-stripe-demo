@@ -27,7 +27,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const user = result.value
-  const postParamsResult = PostUsageTokenParams.safeParse(request.body)
+  const body = await request.json()
+  const postParamsResult = PostUsageTokenParams.safeParse(body)
   if (!postParamsResult.success) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }

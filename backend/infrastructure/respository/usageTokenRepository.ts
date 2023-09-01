@@ -28,5 +28,5 @@ export async function searchUsageTokens(query: SearchQuery) {
 export async function saveUsageToken(usageToken: UsageToken) {
   const firestore = getFirestore()
   const col = firestore.collection(usageTokenCollectionName)
-  col.doc(usageToken.id).set(usageToken)
+  col.doc(usageToken.id).set(JSON.parse(JSON.stringify(usageToken)))
 }
