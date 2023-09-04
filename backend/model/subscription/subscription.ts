@@ -4,7 +4,8 @@ export class Subscription {
   id: IdValue
   userId: string
   stripeSubscriptionId: string
-  stripeSubscriptionItemId: string
+  stripeBasicPlanSubscriptionItemId: string
+  stripeUsageTokenPlanSubscriptionItemId: string
   startedAt: Date
   currentPeriodStartedAt: Date
   currentPeriodEndAt: Date
@@ -13,7 +14,8 @@ export class Subscription {
     id: IdValue,
     userId: string,
     stripeSubscriptionId: string,
-    stripeSubscriptionItemId: string,
+    stripeBasicPlanSubscriptionItemId: string,
+    stripeUsageTokenPlanSubscriptionItemId: string,
     startedAt: Date,
     currentPeriodStartedAt: Date,
     currentPeriodEndAt: Date
@@ -21,7 +23,8 @@ export class Subscription {
     this.id = id
     this.userId = userId
     this.stripeSubscriptionId = stripeSubscriptionId
-    this.stripeSubscriptionItemId = stripeSubscriptionItemId
+    this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
+    this.stripeUsageTokenPlanSubscriptionItemId = stripeUsageTokenPlanSubscriptionItemId
     this.startedAt = startedAt
     this.currentPeriodStartedAt = currentPeriodStartedAt
     this.currentPeriodEndAt = currentPeriodEndAt
@@ -30,7 +33,8 @@ export class Subscription {
   public static create(
     userId: string,
     stripeSubscriptionId: string,
-    stripeSubscriptionItemId: string,
+    stripeBasicPlanSubscriptionItemId: string,
+    stripeUsageTokenPlanSubscriptionItemId: string,
     startedAt: Date,
     currentPeriodStartedAt: Date,
     currentPeriodEndAt: Date
@@ -40,7 +44,8 @@ export class Subscription {
       id,
       userId,
       stripeSubscriptionId,
-      stripeSubscriptionItemId,
+      stripeBasicPlanSubscriptionItemId,
+      stripeUsageTokenPlanSubscriptionItemId,
       startedAt,
       currentPeriodStartedAt,
       currentPeriodEndAt
@@ -51,7 +56,8 @@ export class Subscription {
     id: IdValue,
     userId: string,
     stripeSubscriptionId: string,
-    stripeSubscriptionItemId: string,
+    stripeBasicPlanSubscriptionItemId: string,
+    stripeUsageTokenPlanSubscriptionItemId: string,
     startedAt: Date,
     currentPeriodStartedAt: Date,
     currentPeriodEndAt: Date
@@ -60,7 +66,8 @@ export class Subscription {
       id,
       userId,
       stripeSubscriptionId,
-      stripeSubscriptionItemId,
+      stripeBasicPlanSubscriptionItemId,
+      stripeUsageTokenPlanSubscriptionItemId,
       startedAt,
       currentPeriodStartedAt,
       currentPeriodEndAt

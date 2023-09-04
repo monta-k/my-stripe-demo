@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/backend/lib/auth/middleware'
-import { stripe } from '@/backend/lib/stripe'
+import { STRIPE_BASIC_PLAN_ID, STRIPE_USAGE_TOKEN_PLAN_ID, stripe } from '@/backend/lib/stripe'
 
 export async function POST(request: Request) {
   const result = await verifyAuth(request)
@@ -13,16 +13,21 @@ export async function POST(request: Request) {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
-        price: 'price_1NkLPMKFMJFtb6h8ExhR7aUy',
+        price: STRIPE_BASIC_PLAN_ID,
         quantity: 1
       },
       {
-        price: 'price_1NkLabKFMJFtb6h8ZZKgKMnp'
+        price: STRIPE_USAGE_TOKEN_PLAN_ID
       }
     ],
     mode: 'subscription',
     success_url: `${protocol}://${hostname}/checkout/success`,
     cancel_url: `${protocol}://${hostname}/checkout/cancel`,
+    subscription_data: {
+      metadata: {
+        userId: result.value.firebaseAuthId
+      }
+    },
     metadata: {
       userId: result.value.firebaseAuthId
     }
