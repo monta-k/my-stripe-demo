@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/backend/lib/auth/middleware'
-import Stripe from 'stripe'
-
-const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
-const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2023-08-16' })
+import { stripe } from '@/backend/lib/stripe'
 
 export async function POST(request: Request) {
   const result = await verifyAuth(request)
@@ -25,7 +22,10 @@ export async function POST(request: Request) {
     ],
     mode: 'subscription',
     success_url: `${protocol}://${hostname}/checkout/success`,
-    cancel_url: `${protocol}://${hostname}/checkout/cancel`
+    cancel_url: `${protocol}://${hostname}/checkout/cancel`,
+    metadata: {
+      userId: result.value.firebaseAuthId
+    }
   })
 
   if (!session.url) {
