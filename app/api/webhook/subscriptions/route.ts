@@ -29,9 +29,9 @@ export async function POST(request: Request) {
     eventData.id,
     basicPlanSubscriptionItemId,
     usageTokenPlanSubscriptionItemId,
-    eventData.start_date,
-    eventData.current_period_start,
-    eventData.current_period_end
+    eventData.start_date * 1000,
+    eventData.current_period_start * 1000,
+    eventData.current_period_end * 1000
   )
   await subscriptionRepository.saveSubscription(subscription)
 
