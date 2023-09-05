@@ -13,7 +13,6 @@ export async function middleware(req: NextRequest) {
     try {
       const res = await relativeFetch('/api/me', { headers: { authorization: `Bearer ${idToken}` } })
       if (res.status >= 400) throw new Error('Unauthorized')
-      return
     } catch (e) {
       return NextResponse.redirect(redirectUrl)
     }
