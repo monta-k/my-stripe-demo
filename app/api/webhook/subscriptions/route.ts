@@ -7,10 +7,9 @@ import {
 } from '@/backend/lib/stripe'
 import { Subscription } from '@/backend/model/subscription/subscription'
 import { NextResponse } from 'next/server'
-import Stripe from 'stripe'
 
 export async function POST(request: Request) {
-  let eventData: Stripe.Subscription
+  let eventData
   try {
     eventData = await constructStripeEvent(request, stripeCustomerSubscriptionCreatedEvent)
   } catch (err) {
