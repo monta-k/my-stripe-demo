@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 
   await stripe.subscriptionItems.createUsageRecord(subscription.stripeUsageTokenPlanSubscriptionItemId, {
     quantity: usageToken.token,
-    timestamp: usageToken.usedAt / 1000,
+    timestamp: Math.floor(usageToken.usedAt / 1000),
     action: 'set'
   })
 
