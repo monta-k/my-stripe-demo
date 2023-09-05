@@ -23,10 +23,10 @@ async function fetchSubscription() {
   return subscription
 }
 
-async function fetchTokens() {
+async function fetchTokens(usedAtFrom: Date, usedAtTo: Date) {
   const cookieStore = cookies()
   const idToken = cookieStore.get('idToken')?.value
-  const res = await relativeFetch('/api/me/usageTokens', {
+  const res = await relativeFetch(`/api/me/usageTokens?usedAtFrom=${usedAtFrom}&usedAtTo=${usedAtTo}`, {
     headers: { authorization: `Bearer ${idToken}` },
     next: { tags: ['tokens'] }
   })
@@ -40,18 +40,19 @@ async function createToken(formData: FormData) {
   if (!token) return
   const cookieStore = cookies()
   const idToken = cookieStore.get('idToken')?.value
-  await relativeFetch('/api/me/usageTokens', {
+  const res = await relativeFetch('/api/me/usageTokens', {
     method: 'POST',
     headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ token: Number(token) })
   })
+  console.log(res.status)
   revalidateTag('tokens')
 }
 
 export default async function TokenPage() {
   'use client'
-  await fetchSubscription()
-  const tokens = await fetchTokens()
+  const subscription = await fetchSubscription()
+  const tokens = await fetchTokens(subscription.currentPeriodStartedAt, subscription.currentPeriodEndAt)
   return (
     <div className="min-h-screen flex-col flex items-center justify-between">
       <div className="m-auto">

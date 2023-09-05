@@ -6,9 +6,9 @@ export class Subscription {
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
   stripeUsageTokenPlanSubscriptionItemId: string
-  startedAt: Date
-  currentPeriodStartedAt: Date
-  currentPeriodEndAt: Date
+  startedAt: number
+  currentPeriodStartedAt: number
+  currentPeriodEndAt: number
 
   private constructor(
     id: IdValue,
@@ -16,9 +16,9 @@ export class Subscription {
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
-    startedAt: Date,
-    currentPeriodStartedAt: Date,
-    currentPeriodEndAt: Date
+    startedAt: number,
+    currentPeriodStartedAt: number,
+    currentPeriodEndAt: number
   ) {
     this.id = id
     this.userId = userId
@@ -30,14 +30,19 @@ export class Subscription {
     this.currentPeriodEndAt = currentPeriodEndAt
   }
 
+  public isActive(): boolean {
+    const now = new Date().getTime()
+    return this.currentPeriodStartedAt <= now && now <= this.currentPeriodEndAt
+  }
+
   public static create(
     userId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
-    startedAt: Date,
-    currentPeriodStartedAt: Date,
-    currentPeriodEndAt: Date
+    startedAt: number,
+    currentPeriodStartedAt: number,
+    currentPeriodEndAt: number
   ): Subscription {
     const id = new Id().value
     return new Subscription(
@@ -58,9 +63,9 @@ export class Subscription {
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
-    startedAt: Date,
-    currentPeriodStartedAt: Date,
-    currentPeriodEndAt: Date
+    startedAt: number,
+    currentPeriodStartedAt: number,
+    currentPeriodEndAt: number
   ): Subscription {
     return new Subscription(
       id,

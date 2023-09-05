@@ -7,7 +7,7 @@ interface TokenFormProps {
   handleSubmit: (formData: FormData) => Promise<void>
 }
 
-export async function TokenForm({ tokens, handleSubmit }: TokenFormProps) {
+export function TokenForm({ tokens, handleSubmit }: TokenFormProps) {
   const totalToken = useMemo(() => tokens.reduce((acc, cur) => acc + cur.token, 0), [tokens])
   const formRef = useRef<HTMLFormElement>(null)
   return (

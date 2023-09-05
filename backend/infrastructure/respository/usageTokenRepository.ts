@@ -1,4 +1,4 @@
-import { getFirestore } from '@/backend/lib/firebase-admin/store'
+import { getFirestore, Query, DocumentReference } from '@/backend/lib/firebase-admin/store'
 import { UsageToken } from '@/backend/model/usageToken/usageToken'
 
 const usageTokenCollectionName = 'usageToken'
@@ -9,11 +9,17 @@ interface SearchQuery {
   usedAtTo?: Date
 }
 
-export async function searchUsageTokens(query: SearchQuery) {
+export async function searchUsageTokens(queryParams: SearchQuery) {
   const firestore = getFirestore()
-  const col = firestore.collection(usageTokenCollectionName)
-  if (query.usedBy) {
-    col.where('usedBy', '==', query.usedBy)
+  let col: DocumentReference | Query = firestore.collection(usageTokenCollectionName)
+  if (queryParams.usedBy) {
+    col = col.where('usedBy', '==', queryParams.usedBy)
+  }
+  if (queryParams.usedAtFrom) {
+    col = col.where('usedAt', '>=', queryParams.usedAtFrom.getTime())
+  }
+  if (queryParams.usedAtTo) {
+    col = col.where('usedAt', '<=', queryParams.usedAtTo.getTime())
   }
   const snapshot = await col.get()
   const usageTokens: UsageToken[] = []

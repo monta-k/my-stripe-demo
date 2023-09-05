@@ -8,7 +8,7 @@ export async function getSubscription(userId: string) {
   const col = firestore.collection(subscriptionCollectionName)
   const snapshot = await col.where('userId', '==', userId).get()
   if (snapshot.empty) {
-    throw new Error('No matching documents.')
+    return null
   }
   const data = snapshot.docs[0].data()
   return Subscription.reConstruct(
@@ -26,5 +26,5 @@ export async function getSubscription(userId: string) {
 export async function saveSubscription(subscription: Subscription) {
   const firestore = getFirestore()
   const col = firestore.collection(subscriptionCollectionName)
-  col.doc(subscription.id).set(JSON.parse(JSON.stringify(subscription)))
+  return col.doc(subscription.id).set(JSON.parse(JSON.stringify(subscription)))
 }

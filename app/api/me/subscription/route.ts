@@ -10,6 +10,9 @@ export async function GET(request: Request) {
   }
   const user = result.value
   const subscription = await subscriptionRepository.getSubscription(user.firebaseAuthId)
+  if (!subscription) {
+    return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
+  }
 
   const res: Subscription = {
     id: subscription.id,
@@ -17,9 +20,9 @@ export async function GET(request: Request) {
     stripeSubscriptionId: subscription.stripeSubscriptionId,
     stripeBasicPlanSubscriptionItemId: subscription.stripeBasicPlanSubscriptionItemId,
     stripeUsageTokenPlanSubscriptionItemId: subscription.stripeUsageTokenPlanSubscriptionItemId,
-    startedAt: subscription.startedAt,
-    currentPeriodStartedAt: subscription.currentPeriodStartedAt,
-    currentPeriodEndAt: subscription.currentPeriodEndAt
+    startedAt: new Date(subscription.startedAt),
+    currentPeriodStartedAt: new Date(subscription.currentPeriodStartedAt),
+    currentPeriodEndAt: new Date(subscription.currentPeriodEndAt)
   }
   return NextResponse.json(res)
 }
