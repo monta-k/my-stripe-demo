@@ -25,6 +25,7 @@ export async function constructStripeEvent<T extends StripeEventType>(
   const body = await request.arrayBuffer()
 
   const event = stripe.webhooks.constructEvent(Buffer.from(body), signature, STRIPE_WEBHOOK_SECRET)
+  console.log(event)
   if (event.type !== eventType) throw new Error('Invalid Stripe event type')
 
   switch (event.type) {
