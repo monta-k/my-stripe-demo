@@ -49,14 +49,38 @@ async function createToken(formData: FormData) {
   revalidateTag('tokens')
 }
 
+async function handleManageBillingPortal() {
+  'use server'
+  const cookieStore = cookies()
+  const idToken = cookieStore.get('idToken')?.value
+  const res = await relativeFetch('/api/billing_portal', {
+    method: 'POST',
+    redirect: 'manual',
+    headers: { authorization: `Bearer ${idToken}` }
+  })
+  const redirectUrl = res.headers.get('location')
+  if (res.status !== 303 || !redirectUrl) return
+  redirect(redirectUrl)
+}
+
 export default async function TokenPage() {
   'use client'
   const subscription = await fetchSubscription()
   const tokens = await fetchTokens(subscription.currentPeriodStartedAt, subscription.currentPeriodEndAt)
   return (
-    <div className="min-h-screen flex-col flex items-center justify-between">
+    <div className="min-h-screen flex-col flex items-center justify-between p-10">
       <div className="m-auto">
         <TokenForm tokens={tokens} handleSubmit={createToken} />
+      </div>
+      <div>
+        <form action={handleManageBillingPortal}>
+          <button
+            className="shadow text-black bg-white focus:shadow-outline focus:outline-none py-2 px-4 rounded"
+            type="submit"
+          >
+            支払いを管理する
+          </button>
+        </form>
       </div>
     </div>
   )
