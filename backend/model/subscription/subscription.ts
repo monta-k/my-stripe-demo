@@ -53,6 +53,20 @@ export class Subscription {
     this.status = subscriptionStatusCanceled
   }
 
+  public resubscribe(
+    stripeSubscriptionId: string,
+    stripeBasicPlanSubscriptionItemId: string,
+    stripeUsageTokenPlanSubscriptionItemId: string,
+    currentPeriodStartedAt: number,
+    currentPeriodEndAt: number
+  ): void {
+    this.stripeSubscriptionId = stripeSubscriptionId
+    this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
+    this.stripeUsageTokenPlanSubscriptionItemId = stripeUsageTokenPlanSubscriptionItemId
+    this.currentPeriodStartedAt = currentPeriodStartedAt
+    this.currentPeriodEndAt = currentPeriodEndAt
+  }
+
   public static create(
     userId: string,
     stripeCustomerId: string,

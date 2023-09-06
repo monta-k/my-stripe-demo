@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   }
 
   const subscription = await subscriptionRepository.getSubscription(result.value.firebaseAuthId)
+  if (subscription?.isActiveSubscription()) return NextResponse.json({ error: 'Already Subscribed' }, { status: 400 })
 
   const protocol = request.headers.get('x-forwarded-proto') || 'http'
   const hostname = request.headers.get('host') || ''
