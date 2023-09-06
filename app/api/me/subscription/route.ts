@@ -20,6 +20,7 @@ export async function GET(request: Request) {
     stripeSubscriptionId: subscription.stripeSubscriptionId,
     stripeBasicPlanSubscriptionItemId: subscription.stripeBasicPlanSubscriptionItemId,
     stripeUsageTokenPlanSubscriptionItemId: subscription.stripeUsageTokenPlanSubscriptionItemId,
+    isActive: subscription.isActiveSubscription(),
     startedAt: new Date(subscription.startedAt),
     currentPeriodStartedAt: new Date(subscription.currentPeriodStartedAt),
     currentPeriodEndAt: new Date(subscription.currentPeriodEndAt)

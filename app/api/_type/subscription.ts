@@ -4,6 +4,7 @@ export interface Subscription {
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
   stripeUsageTokenPlanSubscriptionItemId: string
+  isActive: boolean
   startedAt: Date
   currentPeriodStartedAt: Date
   currentPeriodEndAt: Date

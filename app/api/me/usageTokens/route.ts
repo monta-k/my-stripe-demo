@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   }
 
   const subscription = await subscriptionRepository.getSubscription(user.firebaseAuthId)
-  if (!subscription?.isActive()) {
+  if (!subscription?.isActiveSubscription()) {
     return NextResponse.json({ error: 'Subscription is not active' }, { status: 400 })
   }
 

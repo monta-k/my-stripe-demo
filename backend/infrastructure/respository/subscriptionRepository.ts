@@ -18,6 +18,7 @@ export async function getSubscription(userId: string) {
     data.stripeSubscriptionId,
     data.stripeBasicPlanSubscriptionItemId,
     data.stripeUsageTokenPlanSubscriptionItemId,
+    data.status,
     data.startedAt,
     data.currentPeriodStartedAt,
     data.currentPeriodEndAt
