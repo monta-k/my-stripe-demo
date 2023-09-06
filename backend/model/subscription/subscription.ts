@@ -60,6 +60,9 @@ export class Subscription {
     currentPeriodStartedAt: number,
     currentPeriodEndAt: number
   ): void {
+    if (this.isAcriveStatus()) throw new Error('subscription is already active')
+
+    this.status = subscriptionStatusAcrive
     this.stripeSubscriptionId = stripeSubscriptionId
     this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
     this.stripeUsageTokenPlanSubscriptionItemId = stripeUsageTokenPlanSubscriptionItemId
