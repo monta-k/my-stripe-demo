@@ -3,6 +3,7 @@ import { IdValue, Id } from '../common/id'
 export class Subscription {
   id: IdValue
   userId: string
+  stripeCustomerId: string
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
   stripeUsageTokenPlanSubscriptionItemId: string
@@ -13,6 +14,7 @@ export class Subscription {
   private constructor(
     id: IdValue,
     userId: string,
+    stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
@@ -22,6 +24,7 @@ export class Subscription {
   ) {
     this.id = id
     this.userId = userId
+    this.stripeCustomerId = stripeCustomerId
     this.stripeSubscriptionId = stripeSubscriptionId
     this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
     this.stripeUsageTokenPlanSubscriptionItemId = stripeUsageTokenPlanSubscriptionItemId
@@ -37,6 +40,7 @@ export class Subscription {
 
   public static create(
     userId: string,
+    stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
@@ -48,6 +52,7 @@ export class Subscription {
     return new Subscription(
       id,
       userId,
+      stripeCustomerId,
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,
       stripeUsageTokenPlanSubscriptionItemId,
@@ -60,6 +65,7 @@ export class Subscription {
   public static reConstruct(
     id: IdValue,
     userId: string,
+    stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
@@ -70,6 +76,7 @@ export class Subscription {
     return new Subscription(
       id,
       userId,
+      stripeCustomerId,
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,
       stripeUsageTokenPlanSubscriptionItemId,

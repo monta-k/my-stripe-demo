@@ -24,8 +24,11 @@ export async function POST(request: Request) {
   if (!basicPlanSubscriptionItemId || !usageTokenPlanSubscriptionItemId)
     return NextResponse.json({ error: 'subscription plan not found' }, { status: 400 })
 
+  const stripeCustomerId = typeof eventData.customer === 'string' ? eventData.customer : eventData.customer.id
+
   const subscription = Subscription.create(
     eventData.metadata.userId,
+    stripeCustomerId,
     eventData.id,
     basicPlanSubscriptionItemId,
     usageTokenPlanSubscriptionItemId,

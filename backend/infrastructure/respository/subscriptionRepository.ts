@@ -14,6 +14,7 @@ export async function getSubscription(userId: string) {
   return Subscription.reConstruct(
     data.id,
     data.userId,
+    data.stripeCustomerId,
     data.stripeSubscriptionId,
     data.stripeBasicPlanSubscriptionItemId,
     data.stripeUsageTokenPlanSubscriptionItemId,
