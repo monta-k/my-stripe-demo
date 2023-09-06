@@ -1,5 +1,9 @@
 import { IdValue, Id } from '../common/id'
 
+const subscriptionStatusAcrive = 'active'
+const subscriptionStatusCanceled = 'canceled'
+type SubscriptionStatus = typeof subscriptionStatusAcrive | typeof subscriptionStatusCanceled
+
 export class Subscription {
   id: IdValue
   userId: string
@@ -7,6 +11,7 @@ export class Subscription {
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
   stripeUsageTokenPlanSubscriptionItemId: string
+  status: SubscriptionStatus
   startedAt: number
   currentPeriodStartedAt: number
   currentPeriodEndAt: number
@@ -18,6 +23,7 @@ export class Subscription {
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
+    status: SubscriptionStatus,
     startedAt: number,
     currentPeriodStartedAt: number,
     currentPeriodEndAt: number
@@ -28,14 +34,23 @@ export class Subscription {
     this.stripeSubscriptionId = stripeSubscriptionId
     this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
     this.stripeUsageTokenPlanSubscriptionItemId = stripeUsageTokenPlanSubscriptionItemId
+    this.status = status
     this.startedAt = startedAt
     this.currentPeriodStartedAt = currentPeriodStartedAt
     this.currentPeriodEndAt = currentPeriodEndAt
   }
 
-  public isActive(): boolean {
+  private isAcriveStatus(): boolean {
+    return this.status === subscriptionStatusAcrive
+  }
+
+  public isActiveSubscription(): boolean {
     const now = new Date().getTime()
-    return this.currentPeriodStartedAt <= now && now <= this.currentPeriodEndAt
+    return this.isAcriveStatus() && this.currentPeriodStartedAt <= now && now <= this.currentPeriodEndAt
+  }
+
+  public cancelSubscription(): void {
+    this.status = subscriptionStatusCanceled
   }
 
   public static create(
@@ -56,6 +71,7 @@ export class Subscription {
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,
       stripeUsageTokenPlanSubscriptionItemId,
+      subscriptionStatusAcrive,
       startedAt,
       currentPeriodStartedAt,
       currentPeriodEndAt
@@ -69,6 +85,7 @@ export class Subscription {
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
     stripeUsageTokenPlanSubscriptionItemId: string,
+    status: SubscriptionStatus,
     startedAt: number,
     currentPeriodStartedAt: number,
     currentPeriodEndAt: number
@@ -80,6 +97,7 @@ export class Subscription {
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,
       stripeUsageTokenPlanSubscriptionItemId,
+      status,
       startedAt,
       currentPeriodStartedAt,
       currentPeriodEndAt

@@ -2,10 +2,16 @@ import Stripe from 'stripe'
 import { STRIPE_WEBHOOK_SECRET, stripe } from './const'
 
 export const stripeCustomerSubscriptionCreatedEvent = 'customer.subscription.created'
+export const stripeCustomerSubscriptionDeletedEvent = 'customer.subscription.deleted'
 export const stripeInvoiceCreatedEvent = 'invoice.created'
 
-type StripeEventType = typeof stripeCustomerSubscriptionCreatedEvent | typeof stripeInvoiceCreatedEvent
-type StripeEventReturn<T> = T extends typeof stripeCustomerSubscriptionCreatedEvent
+type StripeEventType =
+  | typeof stripeCustomerSubscriptionCreatedEvent
+  | typeof stripeCustomerSubscriptionDeletedEvent
+  | typeof stripeInvoiceCreatedEvent
+type StripeEventReturn<T> = T extends
+  | typeof stripeCustomerSubscriptionCreatedEvent
+  | typeof stripeCustomerSubscriptionDeletedEvent
   ? Stripe.Subscription
   : T extends typeof stripeInvoiceCreatedEvent
   ? Stripe.Invoice
@@ -23,7 +29,7 @@ export async function constructStripeEvent<T extends StripeEventType>(
 
   switch (event.type) {
     case stripeCustomerSubscriptionCreatedEvent:
-      return event.data.object as StripeEventReturn<T>
+    case stripeCustomerSubscriptionDeletedEvent:
     case stripeInvoiceCreatedEvent:
       return event.data.object as StripeEventReturn<T>
     default:
