@@ -34,6 +34,8 @@ export async function POST(request: Request) {
       eventData.current_period_start * 1000,
       eventData.current_period_end * 1000
     )
+    await subscriptionRepository.saveSubscription(subscription)
+    return NextResponse.json({ received: true })
   }
 
   const stripeCustomerId = typeof eventData.customer === 'string' ? eventData.customer : eventData.customer.id
