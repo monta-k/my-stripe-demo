@@ -7,6 +7,7 @@ export async function POST(request: Request) {
   try {
     eventData = await constructStripeEvent(request, stripeCustomerSubscriptionDeletedEvent)
   } catch (err) {
+    console.log(err)
     return NextResponse.json({ error: 'Failed to construct stripe event' }, { status: 401 })
   }
 
