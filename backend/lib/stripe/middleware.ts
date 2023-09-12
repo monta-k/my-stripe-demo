@@ -1,26 +1,31 @@
 import Stripe from 'stripe'
-import { STRIPE_SUBSCRIPTION_CREATED_WEBHOOK_SECRET, STRIPE_SUBSCRIPTION_DELETED_WEBHOOK_SECRET, stripe } from './const'
+import {
+  STRIPE_SUBSCRIPTION_CREATED_WEBHOOK_SECRET,
+  STRIPE_SUBSCRIPTION_DELETED_WEBHOOK_SECRET,
+  STRIPE_INVOICE_PAYMENT_SUCCEEDED_WEBHOOK_SECRET,
+  stripe
+} from './const'
 
 export const stripeCustomerSubscriptionCreatedEvent = 'customer.subscription.created'
 export const stripeCustomerSubscriptionDeletedEvent = 'customer.subscription.deleted'
-export const stripeInvoiceCreatedEvent = 'invoice.created'
+export const stripeInvoicePaymentSucceededEvent = 'invoice.payment_succeeded'
 
 type StripeEventType =
   | typeof stripeCustomerSubscriptionCreatedEvent
   | typeof stripeCustomerSubscriptionDeletedEvent
-  | typeof stripeInvoiceCreatedEvent
+  | typeof stripeInvoicePaymentSucceededEvent
 type StripeEventReturn<T> = T extends
   | typeof stripeCustomerSubscriptionCreatedEvent
   | typeof stripeCustomerSubscriptionDeletedEvent
   ? Stripe.Subscription
-  : T extends typeof stripeInvoiceCreatedEvent
+  : T extends typeof stripeInvoicePaymentSucceededEvent
   ? Stripe.Invoice
   : never
 
 const stripeWebhookSecrets: Record<StripeEventType, string> = {
   [stripeCustomerSubscriptionCreatedEvent]: STRIPE_SUBSCRIPTION_CREATED_WEBHOOK_SECRET,
   [stripeCustomerSubscriptionDeletedEvent]: STRIPE_SUBSCRIPTION_DELETED_WEBHOOK_SECRET,
-  [stripeInvoiceCreatedEvent]: ''
+  [stripeInvoicePaymentSucceededEvent]: STRIPE_INVOICE_PAYMENT_SUCCEEDED_WEBHOOK_SECRET
 }
 
 export async function constructStripeEvent<T extends StripeEventType>(
@@ -38,7 +43,7 @@ export async function constructStripeEvent<T extends StripeEventType>(
   switch (event.type) {
     case stripeCustomerSubscriptionCreatedEvent:
     case stripeCustomerSubscriptionDeletedEvent:
-    case stripeInvoiceCreatedEvent:
+    case stripeInvoicePaymentSucceededEvent:
       return event.data.object as StripeEventReturn<T>
     default:
       throw new Error('Unhandled Stripe event type')
