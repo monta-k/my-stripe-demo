@@ -1,11 +1,11 @@
 import { getFirestore } from '@/backend/lib/firebase-admin/store'
-import { constructStripeEvent, stripeCustomerSubscriptionCreatedEvent } from '@/backend/lib/stripe'
+import { constructStripeEvent, stripeInvoicePaymentSucceededEvent } from '@/backend/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   let eventData
   try {
-    eventData = await constructStripeEvent(request, stripeCustomerSubscriptionCreatedEvent)
+    eventData = await constructStripeEvent(request, stripeInvoicePaymentSucceededEvent)
   } catch (err) {
     return NextResponse.json({ error: 'Failed to construct stripe event' }, { status: 401 })
   }
