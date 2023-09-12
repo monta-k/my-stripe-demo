@@ -53,6 +53,13 @@ export class Subscription {
     this.status = subscriptionStatusCanceled
   }
 
+  public renew(currentPeriodStartedAt: number, currentPeriodEndAt: number): void {
+    if (!this.isAcriveStatus()) throw new Error('subscription is not active')
+
+    this.currentPeriodStartedAt = currentPeriodStartedAt
+    this.currentPeriodEndAt = currentPeriodEndAt
+  }
+
   public resubscribe(
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
