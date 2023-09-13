@@ -1,6 +1,6 @@
 import { subscriptionRepository } from '@/backend/infrastructure/respository'
 import { getFirestore } from '@/backend/lib/firebase-admin/store'
-import { constructStripeEvent, stripeInvoicePaymentSucceededEvent } from '@/backend/lib/stripe'
+import { constructStripeEvent, stripe, stripeInvoicePaymentSucceededEvent } from '@/backend/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
@@ -24,7 +24,9 @@ export async function POST(request: Request) {
     const subscription = await subscriptionRepository.getSubscription(userId)
     if (!subscription) return NextResponse.json({ error: 'subscription not found' }, { status: 400 })
 
-    subscription.renew(eventData.period_start * 1000, eventData.period_end * 1000)
+    const stripeSubscription = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId)
+
+    subscription.renew(stripeSubscription.current_period_start * 1000, stripeSubscription.current_period_end * 1000)
     await subscriptionRepository.saveSubscription(subscription)
   }
   return NextResponse.json({ received: true })

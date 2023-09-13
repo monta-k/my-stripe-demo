@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/backend/lib/auth/middleware'
-import { STRIPE_BASIC_PLAN_ID, STRIPE_USAGE_TOKEN_PLAN_ID, stripe } from '@/backend/lib/stripe'
+import { stripe } from '@/backend/lib/stripe'
 import { subscriptionRepository } from '@/backend/infrastructure/respository'
 
 export async function POST(request: Request) {
