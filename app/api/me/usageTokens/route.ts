@@ -2,8 +2,9 @@ import { verifyAuth } from '@/backend/lib/auth/middleware'
 import { NextResponse } from 'next/server'
 import { PostUsageTokenParams, UsageToken } from '../../_type/usageToken'
 import { UsageToken as UsageTokenModel } from '@/backend/model/usageToken/usageToken'
+import { usageTokenQuery } from '@/backend/infrastructure/query'
 import { subscriptionRepository, usageTokenRepository } from '@/backend/infrastructure/respository'
-import { STRIPE_USAGE_TOKEN_PLAN_ID, stripe } from '@/backend/lib/stripe'
+import { stripe } from '@/backend/lib/stripe'
 
 export async function GET(request: Request) {
   const result = await verifyAuth(request)
@@ -14,7 +15,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const usedAtFrom = searchParams.get('usedAtFrom')
   const usedAtTo = searchParams.get('usedAtTo')
-  const usageTokens = await usageTokenRepository.searchUsageTokens({
+  const usageTokens = await usageTokenQuery.searchUsageTokens({
     usedBy: user.firebaseAuthId,
     usedAtFrom: usedAtFrom ? new Date(usedAtFrom) : undefined,
     usedAtTo: usedAtTo ? new Date(usedAtTo) : undefined
