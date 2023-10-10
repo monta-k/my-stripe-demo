@@ -25,7 +25,7 @@ export async function POST(request: Request, { params }: { params: { workspaceId
   const protocol = request.headers.get('x-forwarded-proto') || 'http'
   const hostname = request.headers.get('host') || ''
   const session = await stripe.billingPortal.sessions.create({
-    return_url: `${protocol}://${hostname}`,
+    return_url: `${protocol}://${hostname}/workspaces/${workspace.id}`,
     customer: subscription.stripeCustomerId
   })
 
