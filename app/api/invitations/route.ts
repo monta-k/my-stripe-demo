@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { workspaceQuery } from '@/backend/infrastructure/query'
 import { Invitation } from '@/app/api/_type/invitation'
 
-export async function Get(request: Request) {
+export async function GET(request: Request) {
   const result = await verifyAuth(request)
   if (result.isFailure) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
