@@ -55,14 +55,13 @@ export async function POST(request: Request, { params }: { params: { workspaceId
   const member = workspace.members.find(member => member.authId === result.value.firebaseAuthId)
   if (!member) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const user = result.value
   const body = await request.json()
   const postParamsResult = PostUsageTokenParams.safeParse(body)
   if (!postParamsResult.success) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const subscription = await subscriptionRepository.getSubscription(user.firebaseAuthId)
+  const subscription = await subscriptionRepository.getSubscription(workspace.id)
   if (!subscription?.isActiveSubscription()) {
     return NextResponse.json({ error: 'Subscription is not active' }, { status: 400 })
   }
