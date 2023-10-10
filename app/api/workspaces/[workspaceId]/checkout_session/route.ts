@@ -35,8 +35,8 @@ export async function POST(request: Request, { params }: { params: { workspaceId
       }
     ],
     mode: 'subscription',
-    success_url: `${protocol}://${hostname}/checkout/workspaces/${workspaceId}/success`,
-    cancel_url: `${protocol}://${hostname}/checkout/workspaces/${workspaceId}/cancel`,
+    success_url: `${protocol}://${hostname}/workspaces/${workspaceId}/checkout/success`,
+    cancel_url: `${protocol}://${hostname}/workspaces/${workspaceId}/checkout/cancel`,
     customer: subscription?.stripeCustomerId,
     subscription_data: {
       metadata: {
