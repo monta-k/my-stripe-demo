@@ -3,10 +3,6 @@ import { Workspace } from '@/backend/model/workspace/workspace'
 
 const workspaceCollectionName = 'workspace'
 
-interface SearchQuery {
-  memberAuthId?: string
-}
-
 export async function getWorkspace(workspaceId: string) {
   const firestore = getFirestore()
   const col = firestore.collection(workspaceCollectionName)
@@ -15,8 +11,13 @@ export async function getWorkspace(workspaceId: string) {
     return null
   }
   const data = snapshot.docs[0].data()
-  const workspace = Workspace.reConstruct(data.id, data.name, data.members, data.createdAt)
+  const workspace = Workspace.reConstruct(data.id, data.name, data.members, data.invitations, data.createdAt)
   return workspace
+}
+
+interface SearchQuery {
+  memberAuthId?: string
+  invitationEmail?: string
 }
 
 export async function searchWorkspaces(queryParams: SearchQuery) {
@@ -25,11 +26,14 @@ export async function searchWorkspaces(queryParams: SearchQuery) {
   if (queryParams.memberAuthId) {
     col = col.where('memberAuthIds', 'array-contains', queryParams.memberAuthId)
   }
+  if (queryParams.invitationEmail) {
+    col = col.where('invitations', 'array-contains', queryParams.invitationEmail)
+  }
   const snapshot = await col.get()
   const workspaces: Workspace[] = []
   snapshot.forEach(doc => {
     const data = doc.data()
-    const workspace = Workspace.reConstruct(data.id, data.name, data.memberAuthIds, data.createdAt)
+    const workspace = Workspace.reConstruct(data.id, data.name, data.members, data.invitations, data.createdAt)
     workspaces.push(workspace)
   })
   return workspaces
