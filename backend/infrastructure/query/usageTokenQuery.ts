@@ -4,6 +4,7 @@ import { UsageToken } from '@/backend/model/usageToken/usageToken'
 const usageTokenCollectionName = 'usageToken'
 
 interface SearchQuery {
+  workspaceId?: string
   usedBy?: string
   usedAtFrom?: Date
   usedAtTo?: Date
@@ -12,6 +13,9 @@ interface SearchQuery {
 export async function searchUsageTokens(queryParams: SearchQuery) {
   const firestore = getFirestore()
   let col: DocumentReference | Query = firestore.collection(usageTokenCollectionName)
+  if (queryParams.workspaceId) {
+    col = col.where('workspaceId', '==', queryParams.workspaceId)
+  }
   if (queryParams.usedBy) {
     col = col.where('usedBy', '==', queryParams.usedBy)
   }
@@ -25,7 +29,7 @@ export async function searchUsageTokens(queryParams: SearchQuery) {
   const usageTokens: UsageToken[] = []
   snapshot.forEach(doc => {
     const data = doc.data()
-    const usageToken = UsageToken.reConstruct(data.id, data.token, data.usedBy, data.usedAt)
+    const usageToken = UsageToken.reConstruct(data.id, data.workspaceId, data.token, data.usedBy, data.usedAt)
     usageTokens.push(usageToken)
   })
   return usageTokens

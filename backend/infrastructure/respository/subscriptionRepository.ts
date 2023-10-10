@@ -3,17 +3,17 @@ import { Subscription } from '@/backend/model/subscription/subscription'
 
 const subscriptionCollectionName = 'subscription'
 
-export async function getSubscription(userId: string) {
+export async function getSubscription(workspaceId: string) {
   const firestore = getFirestore()
   const col = firestore.collection(subscriptionCollectionName)
-  const snapshot = await col.where('userId', '==', userId).get()
+  const snapshot = await col.where('workspaceId', '==', workspaceId).get()
   if (snapshot.empty) {
     return null
   }
   const data = snapshot.docs[0].data()
   return Subscription.reConstruct(
     data.id,
-    data.userId,
+    data.workspaceId,
     data.stripeCustomerId,
     data.stripeSubscriptionId,
     data.stripeBasicPlanSubscriptionItemId,

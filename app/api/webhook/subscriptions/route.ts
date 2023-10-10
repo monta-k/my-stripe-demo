@@ -23,8 +23,8 @@ export async function POST(request: Request) {
   if (!basicPlanSubscriptionItemId || !usageTokenPlanSubscriptionItemId)
     return NextResponse.json({ error: 'subscription plan not found' }, { status: 400 })
 
-  const userId = eventData.metadata.userId
-  const subscription = await subscriptionRepository.getSubscription(userId)
+  const workspaceId = eventData.metadata.workspaceId
+  const subscription = await subscriptionRepository.getSubscription(workspaceId)
   if (subscription) {
     if (subscription.isActiveSubscription()) return NextResponse.json({ error: 'Already Subscribed' }, { status: 400 })
     subscription.resubscribe(
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   const stripeCustomerId = typeof eventData.customer === 'string' ? eventData.customer : eventData.customer.id
 
   const newSubscription = Subscription.create(
-    userId,
+    workspaceId,
     stripeCustomerId,
     eventData.id,
     basicPlanSubscriptionItemId,

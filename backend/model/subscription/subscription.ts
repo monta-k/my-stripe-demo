@@ -6,7 +6,7 @@ type SubscriptionStatus = typeof subscriptionStatusAcrive | typeof subscriptionS
 
 export class Subscription {
   id: IdValue
-  userId: string
+  workspaceId: string
   stripeCustomerId: string
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
@@ -18,7 +18,7 @@ export class Subscription {
 
   private constructor(
     id: IdValue,
-    userId: string,
+    workspaceId: string,
     stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
@@ -29,7 +29,7 @@ export class Subscription {
     currentPeriodEndAt: number
   ) {
     this.id = id
-    this.userId = userId
+    this.workspaceId = workspaceId
     this.stripeCustomerId = stripeCustomerId
     this.stripeSubscriptionId = stripeSubscriptionId
     this.stripeBasicPlanSubscriptionItemId = stripeBasicPlanSubscriptionItemId
@@ -78,7 +78,7 @@ export class Subscription {
   }
 
   public static create(
-    userId: string,
+    workspaceId: string,
     stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
@@ -90,7 +90,7 @@ export class Subscription {
     const id = new Id().value
     return new Subscription(
       id,
-      userId,
+      workspaceId,
       stripeCustomerId,
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,
@@ -104,7 +104,7 @@ export class Subscription {
 
   public static reConstruct(
     id: IdValue,
-    userId: string,
+    workspaceId: string,
     stripeCustomerId: string,
     stripeSubscriptionId: string,
     stripeBasicPlanSubscriptionItemId: string,
@@ -116,7 +116,7 @@ export class Subscription {
   ): Subscription {
     return new Subscription(
       id,
-      userId,
+      workspaceId,
       stripeCustomerId,
       stripeSubscriptionId,
       stripeBasicPlanSubscriptionItemId,

@@ -7,6 +7,18 @@ interface SearchQuery {
   memberAuthId?: string
 }
 
+export async function getWorkspace(workspaceId: string) {
+  const firestore = getFirestore()
+  const col = firestore.collection(workspaceCollectionName)
+  const snapshot = await col.where('id', '==', workspaceId).get()
+  if (snapshot.empty) {
+    return null
+  }
+  const data = snapshot.docs[0].data()
+  const workspace = Workspace.reConstruct(data.id, data.name, data.memberAuthIds, data.createdAt)
+  return workspace
+}
+
 export async function searchWorkspaces(queryParams: SearchQuery) {
   const firestore = getFirestore()
   let col: DocumentReference | Query = firestore.collection(workspaceCollectionName)

@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-interface Member {
+export interface Member {
   id: string
   authId: string
   role: string

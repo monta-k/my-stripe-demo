@@ -1,5 +1,5 @@
 'use client'
-import { UsageToken } from '../api/_type/usageToken'
+import { UsageToken } from '../../../api/_type/usageToken'
 import { useMemo, useRef } from 'react'
 
 interface TokenFormProps {

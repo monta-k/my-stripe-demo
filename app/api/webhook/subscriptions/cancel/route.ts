@@ -7,11 +7,10 @@ export async function POST(request: Request) {
   try {
     eventData = await constructStripeEvent(request, stripeCustomerSubscriptionDeletedEvent)
   } catch (err) {
-    console.log(err)
     return NextResponse.json({ error: 'Failed to construct stripe event' }, { status: 401 })
   }
 
-  const subscription = await subscriptionRepository.getSubscription(eventData.metadata.userId)
+  const subscription = await subscriptionRepository.getSubscription(eventData.metadata.workspaceId)
   if (!subscription) return NextResponse.json({ error: 'subscription not found' }, { status: 400 })
 
   subscription.cancelSubscription()

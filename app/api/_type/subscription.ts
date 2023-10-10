@@ -1,6 +1,6 @@
 export interface Subscription {
   id: string
-  userId: string
+  workspaceId: string
   stripeSubscriptionId: string
   stripeBasicPlanSubscriptionItemId: string
   stripeUsageTokenPlanSubscriptionItemId: string

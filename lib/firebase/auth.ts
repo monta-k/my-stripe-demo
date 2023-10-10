@@ -24,7 +24,7 @@ export const useSignIn = () => {
         const idToken = await user.getIdToken()
         const { refreshToken, uid } = user
         setTokenToCookie({ idToken, refreshToken, uid })
-        await router.push('/')
+        await router.push('/workspaces')
       })
       .catch(error => {
         // ポップアップがキャンセルされた場合はエラーを無視する

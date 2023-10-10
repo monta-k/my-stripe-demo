@@ -2,7 +2,7 @@ import { verifyAuth } from '@/backend/lib/auth/middleware'
 import { NextResponse } from 'next/server'
 import { Workspace as WorksapceModel } from '@/backend/model/workspace/workspace'
 import { workspaceQuery } from '@/backend/infrastructure/query'
-import { PostWorkspaceParams, Workspace } from '../../_type/workspace'
+import { PostWorkspaceParams, Workspace } from '../_type/workspace'
 import { worksapceRepository } from '@/backend/infrastructure/respository'
 
 export async function GET(request: Request) {

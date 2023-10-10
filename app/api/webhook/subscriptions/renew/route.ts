@@ -12,16 +12,15 @@ export async function POST(request: Request) {
   }
 
   // debug
-  console.log(eventData)
   const firestore = getFirestore()
   const col = firestore.collection('stripeInvoiceEvent')
   await col.doc(eventData.id).set(JSON.parse(JSON.stringify(eventData)))
 
   if (eventData.billing_reason === 'subscription_cycle') {
-    const userId = eventData.subscription_details?.metadata?.userId
-    if (!userId) return NextResponse.json({ error: 'userId not found' }, { status: 400 })
+    const workspaceId = eventData.subscription_details?.metadata?.workspaceId
+    if (!workspaceId) return NextResponse.json({ error: 'workspaceId not found' }, { status: 400 })
 
-    const subscription = await subscriptionRepository.getSubscription(userId)
+    const subscription = await subscriptionRepository.getSubscription(workspaceId)
     if (!subscription) return NextResponse.json({ error: 'subscription not found' }, { status: 400 })
 
     const stripeSubscription = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId)

@@ -1,10 +1,10 @@
 import { relativeFetch } from '@/lib/fetch'
 import { cookies } from 'next/headers'
-import { UsageToken } from './api/_type/usageToken'
+import { UsageToken } from '../../api/_type/usageToken'
 import { revalidateTag } from 'next/cache'
 import { TokenForm } from './_TokenForm'
 import { redirect } from 'next/navigation'
-import { Subscription } from './api/_type/subscription'
+import { Subscription } from '../../api/_type/subscription'
 
 async function fetchSubscription() {
   const cookieStore = cookies()
