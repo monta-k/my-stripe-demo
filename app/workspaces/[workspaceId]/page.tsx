@@ -45,6 +45,10 @@ export default async function TokenPage({ params }: { params: { workspaceId: str
     await postUsageToken(idToken, workspaceId, Number(token))
     revalidateTag(getUsageTokenTag)
   }
+  async function redirectMemberPage() {
+    'use server'
+    redirect(`/workspaces/${workspaceId}/members`)
+  }
   const subscription = await fetchSubscription(workspaceId)
   const tokens = await fetchTokens(workspaceId, subscription.currentPeriodStartedAt, subscription.currentPeriodEndAt)
   return (
@@ -52,13 +56,21 @@ export default async function TokenPage({ params }: { params: { workspaceId: str
       <div className="m-auto">
         <TokenForm tokens={tokens} handleSubmit={createToken} />
       </div>
-      <div>
+      <div className="flex gap-5">
         <form action={handleManageBillingPortal}>
           <button
             className="shadow text-black bg-white focus:shadow-outline focus:outline-none py-2 px-4 rounded"
             type="submit"
           >
             支払いを管理する
+          </button>
+        </form>
+        <form action={redirectMemberPage}>
+          <button
+            className="shadow text-black bg-white focus:shadow-outline focus:outline-none py-2 px-4 rounded"
+            type="submit"
+          >
+            メンバーを管理する
           </button>
         </form>
       </div>

@@ -26,11 +26,27 @@ export async function getWorkspaces(idToken: string) {
   })
 }
 
+export const getWorkspaceTag = 'workspace'
+export async function getWorkspace(idToken: string, workspaceId: string) {
+  return await relativeFetch(`/api/workspaces/${workspaceId}`, {
+    headers: { authorization: `Bearer ${idToken}` },
+    next: { tags: [getWorkspaceTag] }
+  })
+}
+
 export async function postWorkspace(idToken: string, name: string) {
   return await relativeFetch('/api/workspaces', {
     method: 'POST',
     headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ name })
+  })
+}
+
+export async function postInvitation(idToken: string, workspaceId: string, email: string) {
+  return await relativeFetch(`/api/workspaces/${workspaceId}/invitations`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
   })
 }
 

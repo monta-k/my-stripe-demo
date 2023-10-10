@@ -3,10 +3,17 @@ import { Workspace } from '@/backend/model/workspace/workspace'
 
 const workspaceCollectionName = 'workspace'
 
-export async function getWorkspace(workspaceId: string) {
+interface GetQuery {
+  memberAuthId?: string
+}
+
+export async function getWorkspace(workspaceId: string, queryParams?: GetQuery) {
   const firestore = getFirestore()
-  const col = firestore.collection(workspaceCollectionName)
-  const snapshot = await col.where('id', '==', workspaceId).get()
+  let col: DocumentReference | Query = firestore.collection(workspaceCollectionName).where('id', '==', workspaceId)
+  if (queryParams?.memberAuthId) {
+    col = col.where('memberAuthIds', 'array-contains', queryParams.memberAuthId)
+  }
+  const snapshot = await col.get()
   if (snapshot.empty) {
     return null
   }

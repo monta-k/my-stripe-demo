@@ -22,6 +22,7 @@ export async function GET(request: Request) {
       role: member.role,
       createdAt: new Date(member.createdAt)
     })),
+    invitations: workspace.invitations,
     createdAt: new Date(workspace.createdAt)
   }))
   return NextResponse.json(res)

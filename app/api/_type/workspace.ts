@@ -11,6 +11,7 @@ export interface Workspace {
   id: string
   name: string
   members: Member[]
+  invitations: string[]
   createdAt: Date
 }
 

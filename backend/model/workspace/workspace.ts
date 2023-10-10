@@ -35,7 +35,7 @@ export class Workspace {
     return new Workspace(id, name, members, invitations, createdAt)
   }
 
-  private isMember(memerId: string): boolean {
+  public isMember(memerId: string): boolean {
     return this.members.some(member => member.id === memerId)
   }
 
