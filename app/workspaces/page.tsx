@@ -1,16 +1,13 @@
 import { cookies } from 'next/headers'
-import { relativeFetch } from '@/lib/fetch'
 import { Workspace } from '../api/_type/workspace'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { getWorkspaces } from '@/lib/api'
 
 async function fetchWorkspaces() {
   const cookieStore = cookies()
-  const idToken = cookieStore.get('idToken')?.value
-  const res = await relativeFetch('/api/me/workspaces', {
-    headers: { authorization: `Bearer ${idToken}` },
-    next: { tags: ['subscription'] }
-  })
+  const idToken = cookieStore.get('idToken')?.value || ''
+  const res = await getWorkspaces(idToken)
 
   const workspaces: Workspace[] = await res.json()
   if (workspaces.length < 1) {
@@ -27,7 +24,7 @@ export default async function Checkout() {
         <div className="mb-5">
           {workspaces.map(workspace => (
             <div className="mb-3">
-              <Link href={`/${workspace.id}`}>{workspace.name}</Link>
+              <Link href={`/workspaces/${workspace.id}`}>{workspace.name}</Link>
             </div>
           ))}
         </div>

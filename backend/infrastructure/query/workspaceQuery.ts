@@ -15,7 +15,7 @@ export async function getWorkspace(workspaceId: string) {
     return null
   }
   const data = snapshot.docs[0].data()
-  const workspace = Workspace.reConstruct(data.id, data.name, data.memberAuthIds, data.createdAt)
+  const workspace = Workspace.reConstruct(data.id, data.name, data.members, data.createdAt)
   return workspace
 }
 

@@ -1,4 +1,4 @@
-import { relativeFetch } from '@/lib/fetch'
+import { postWorkspace } from '@/lib/api'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -7,12 +7,8 @@ async function createWorkspace(formData: FormData) {
   const name = formData.get('name')
   if (!name) return
   const cookieStore = cookies()
-  const idToken = cookieStore.get('idToken')?.value
-  await relativeFetch('/api/me/workspaces', {
-    method: 'POST',
-    headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name })
-  })
+  const idToken = cookieStore.get('idToken')?.value || ''
+  await postWorkspace(idToken, name.toString())
   redirect('/workspaces')
 }
 
