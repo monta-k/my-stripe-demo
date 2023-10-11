@@ -29,14 +29,24 @@ export async function POST(request: Request, { params }: { params: { workspaceId
   await worksapceRepository.saveWorksapce(workspace)
 
   const stripeSubscription = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId)
-  stripe.subscriptions.update(stripeSubscription.id, {
+  const stripeSubscriptionEndDate = new Date(stripeSubscription.current_period_end * 1000)
+  // 日割りを行うための計算
+  const protationDate = Math.floor(
+    new Date().setHours(
+      stripeSubscriptionEndDate.getHours(),
+      stripeSubscriptionEndDate.getMinutes(),
+      stripeSubscriptionEndDate.getSeconds()
+    ) / 1000
+  )
+  await stripe.subscriptions.update(stripeSubscription.id, {
     items: [
       {
         id: subscription.stripeBasicPlanSubscriptionItemId,
         quantity: workspace.members.length
       }
     ],
-    proration_behavior: 'always_invoice'
+    proration_behavior: 'always_invoice',
+    proration_date: protationDate
   })
 
   return NextResponse.json({ message: 'ok' }, { status: 201 })
