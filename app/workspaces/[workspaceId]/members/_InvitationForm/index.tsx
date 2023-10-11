@@ -1,17 +1,19 @@
 'use client'
-import { useMemo, useRef } from 'react'
+import { Workspace } from '@/app/api/_type/workspace'
+import { useRef } from 'react'
 
 interface TokenFormProps {
-  handleSubmit: (formData: FormData) => Promise<void>
+  workspace: Workspace
+  handleSubmit: (workspace: Workspace, formData: FormData) => Promise<void>
 }
 
-export function InvitationForm({ handleSubmit }: TokenFormProps) {
+export function InvitationForm({ workspace, handleSubmit }: TokenFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   return (
     <>
       <form
         action={async formData => {
-          await handleSubmit(formData)
+          await handleSubmit(workspace, formData)
           formRef.current?.reset()
         }}
         ref={formRef}

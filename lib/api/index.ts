@@ -42,11 +42,31 @@ export async function postWorkspace(idToken: string, name: string) {
   })
 }
 
+export async function deleteMember(idToken: string, workspaceId: string, memberId: string) {
+  return await relativeFetch(`/api/workspaces/${workspaceId}/members/${memberId}`, {
+    method: 'DELETE',
+    headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' }
+  })
+}
+
+export async function getInvitations(idToken: string) {
+  return await relativeFetch('/api/invitations', {
+    headers: { authorization: `Bearer ${idToken}` }
+  })
+}
+
 export async function postInvitation(idToken: string, workspaceId: string, email: string) {
   return await relativeFetch(`/api/workspaces/${workspaceId}/invitations`, {
     method: 'POST',
     headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ email })
+  })
+}
+
+export async function postInvitationAccept(idToken: string, workspaceId: string) {
+  return await relativeFetch(`/api/workspaces/${workspaceId}/invitations/accept`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json' }
   })
 }
 

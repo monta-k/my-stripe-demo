@@ -2,7 +2,7 @@ import { IdValue, Id } from '../common/id'
 
 const ownerRole = 'owner'
 const generalRole = 'general'
-type MemberRole = typeof ownerRole | typeof generalRole
+export type MemberRole = typeof ownerRole | typeof generalRole
 
 export class Member {
   id: IdValue

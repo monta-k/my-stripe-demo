@@ -1,4 +1,5 @@
 import { getFirestore, Query, DocumentReference } from '@/backend/lib/firebase-admin/store'
+import { Member, MemberRole } from '@/backend/model/workspace/member'
 import { Workspace } from '@/backend/model/workspace/workspace'
 
 const workspaceCollectionName = 'workspace'
@@ -18,7 +19,11 @@ export async function getWorkspace(workspaceId: string, queryParams?: GetQuery) 
     return null
   }
   const data = snapshot.docs[0].data()
-  const workspace = Workspace.reConstruct(data.id, data.name, data.members, data.invitations, data.createdAt)
+  const members = data.members.map(
+    (member: { id: string; workspaceId: string; authId: string; role: MemberRole; createdAt: number }) =>
+      Member.reConstruct(member.id, member.workspaceId, member.authId, member.role, member.createdAt)
+  )
+  const workspace = Workspace.reConstruct(data.id, data.name, members, data.invitations, data.createdAt)
   return workspace
 }
 
