@@ -28,7 +28,7 @@ export async function POST(request: Request, { params }: { params: { workspaceId
     line_items: [
       {
         price: STRIPE_BASIC_PLAN_ID,
-        quantity: 1
+        quantity: workspace.members.length
       },
       {
         price: STRIPE_USAGE_TOKEN_PLAN_ID
